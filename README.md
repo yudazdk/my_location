@@ -3,6 +3,9 @@ React test including updaing coordinates from google maps API.
 
 This project hanles the React test including the 2 bonuses.
 
+Clone the project under folder: my_location !!!!
+
+
 At the footer there are 2 links
    1. Map icon that links to location page.
    2. Link to categories.
