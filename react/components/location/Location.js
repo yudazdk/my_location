@@ -13,6 +13,10 @@ import * as CategoryActions from '../../actions/CategoryActions';
 import * as LocationActions from '../../actions/LocationActions';
 
 
+/**
+ * This component handles locations.
+ *
+ */
 class Location extends React.Component {
     constructor(props) {
         super(props);
@@ -35,11 +39,19 @@ class Location extends React.Component {
         LocationActions.loadLocations(this.props.dispatch, this.props.sortDirection, this.props.sortField);
     }
 
+    /**
+     * This function displays the embeded google map
+     * according to the new loaction's coordinates.
+     *
+     */
     showGoogleMap() {
         this.props.dispatch({type:LocationActions.ActionTypes.LOCATION.SHOW_GOOGLE_MAP,
                              googleMapsCoordinates: this.props.locationData.coordinates});
     }
 
+    /**
+     * This function deletes a location.
+     */
     deleteLocation() {
         let locationsList = this.props.locationsList;
 
@@ -60,6 +72,9 @@ class Location extends React.Component {
         this.props.dispatch({type:LocationActions.ActionTypes.LOCATION.HIDE_GOOGLE_MAP});
     }
 
+    /**
+     * This function adds a location.
+     */
     addLocation() {
         let locationsList = this.props.locationsList;
 
@@ -137,16 +152,30 @@ class Location extends React.Component {
         }
     }
 
+    /**
+     * This function updates the item according
+     * to google maps coordinates.
+     *
+     */
     saveGoogleApiModalCoordinates() {
         this.props.dispatch({type: LocationActions.ActionTypes.LOCATION.SAVE_GOOGLE_MAPS_API_COORDINATES});
 
         this.props.dispatch({type: LocationActions.ActionTypes.LOCATION.HIDE_GOOGLE_API_MAPS});
     }
 
+    /**
+     * This function hides the google api modal
+     * which enables choosing coordinaes from a map.
+     */
     hideGoogleMapApiModal() {
         this.props.dispatch({type: LocationActions.ActionTypes.LOCATION.HIDE_GOOGLE_API_MAPS});
     }
 
+    /**
+     * This function shows the modal
+     * for editing categories for
+     * a location item.
+     */
     showEditCategoriesModal() {
         this.props.dispatch({type: LocationActions.ActionTypes.LOCATION.SHOW_LOCATION_EDIT_CATEGORY_MODAL,
                              actionType: 'add'});
@@ -203,6 +232,13 @@ class Location extends React.Component {
         }
     }
 
+    /**
+     *
+     * This function displays a new row
+     * for adding a location.
+     *
+     * @returns {XML}
+     */
     renderNewLocationRow() {
         if ( this.props.showAddLocationRow ) {
             return (
@@ -316,6 +352,12 @@ class Location extends React.Component {
         }
     }
 
+    /**
+     * This function sorts a location.
+     *
+     * @param sortDirection
+     * @param sortField
+     */
     sortLocations(sortDirection, sortField) {
         this.props.dispatch({type: LocationActions.ActionTypes.LOCATION.UPDATE_SORT_DATA, sortDirection: sortDirection,
                              sortField: sortField});
@@ -323,6 +365,13 @@ class Location extends React.Component {
         LocationActions.loadLocations(this.props.dispatch, sortDirection, sortField);
     }
 
+    /**
+     * This function renders the icon of
+     * sorting the locations accoring to
+     * sort direction's value ('asc' or 'desc').
+     *
+     * @returns {XML}
+     */
     renderSortIcon() {
         if ( this.props.sortDirection == 'asc' ) {
             return (

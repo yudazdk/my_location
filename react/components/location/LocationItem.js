@@ -4,6 +4,11 @@ import { connect } from 'react-redux';
 import * as LocationActions from '../../actions/LocationActions';
 
 
+/**
+ * This component handles each location item
+ * in the locations table list.
+ *
+ */
 class LocationItem extends React.Component {
     constructor(props) {
         super(props);
@@ -22,6 +27,10 @@ class LocationItem extends React.Component {
         this.googleMapMode = require('../../libs/constants').googleMapMode;
     }
 
+    /**
+     * This class edits the location item.
+     *
+     */
     editLocation() {
         let locationsList = this.props.locationsList;
 
@@ -30,18 +39,30 @@ class LocationItem extends React.Component {
         locationsList[this.props.editLocationIndex].coordinates = this.props.locationData.coordinates;
         locationsList[this.props.editLocationIndex].categories = this.props.locationData.categories;
 
+        // Store the updated locations
         localStorage.setItem(this.localStorageItems.locationsName, JSON.stringify(locationsList));
 
+        // Load the updated loacations
         LocationActions.loadLocations(this.props.dispatch, this.props.sortDirection, this.props.sortField);
 
+        // Back to view mode
         this.props.dispatch({type: LocationActions.ActionTypes.LOCATION.DISABLE_LOCATION_ROW_EDITING});
     }
 
+    /**
+     * This function show the embeded google map
+     * If it's a "view" mode show the map according
+     * to the current coordinates value.
+     * If it's "edit" mode show the map according
+     * to the edited coordinates value.
+     *
+     * @param mode
+     */
     showGoogleMap(mode) {
         switch ( mode ) {
             case this.googleMapMode.edit:
                 this.props.dispatch({type:LocationActions.ActionTypes.LOCATION.SHOW_GOOGLE_MAP,
-                    googleMapsCoordinates: this.props.locationData.coordinates});
+                                     googleMapsCoordinates: this.props.locationData.coordinates});
                 break;
 
             case this.googleMapMode.view:
@@ -51,13 +72,26 @@ class LocationItem extends React.Component {
         }
     }
 
+    /**
+     * This function disables editing
+     * the item and changed it's mode
+     * to "view" mode.
+     */
     disableEditing() {
         this.props.dispatch({type: LocationActions.ActionTypes.LOCATION.DISABLE_LOCATION_ROW_EDITING});
     }
 
+    /**
+     * This function enables editing
+     * the item and changes it's mode
+     * to "edit" mode.
+     *
+     */
     enableEditing() {
         var locationData = {};
 
+        // A variable to store changes
+        // untul the item is saved.
         locationData = {
             name: this.props.item.name,
             address: this.props.item.address,
@@ -69,6 +103,10 @@ class LocationItem extends React.Component {
                              locationIndex: this.props.locationIndex, locationData: locationData});
     }
 
+    /**
+     * This function shows the delete modal
+     * dialog.
+     */
     showDeleteModalDialog() {
         var modalHeader = "";
         var locationsList = this.props.locationsList;
@@ -80,6 +118,13 @@ class LocationItem extends React.Component {
                              locationIndex: this.props.locationIndex, modalHeader: modalHeader});
     }
 
+    /**
+     * This function displays buttons for each item.
+     * The buttons are not displayed when another
+     * item is being edited or a new item is added.
+     *
+     * @returns {*}
+     */
     renderNonEditedRowButtons() {
         if (!this.props.showAddLocationRow && this.props.editLocationIndex == -1) {
             return (
@@ -102,6 +147,12 @@ class LocationItem extends React.Component {
         }
     }
 
+    /**
+     * This function displays the current
+     * categories for each item.
+     *
+     * @returns {*}
+     */
     renderNonEditedCategories() {
         var that = this;
 
@@ -124,6 +175,12 @@ class LocationItem extends React.Component {
         }
     }
 
+    /**
+     * This function displays the item
+     * in "view" mode.
+     *
+     * @returns {XML}
+     */
     renderNonEditedRow() {
         return (
             <tr key={this.props.key}>
@@ -145,6 +202,12 @@ class LocationItem extends React.Component {
         );
     }
 
+    /**
+     * This function show a modal that displays
+     * the map with the item's current coordinates.
+     *
+     * @returns {XML}
+     */
     renderGoogleMapIcon() {
         if ( this.props.locationData.coordinates.length > 0 ) {
             return (
@@ -173,11 +236,21 @@ class LocationItem extends React.Component {
         }
     }
 
+    /**
+     * This function shows a modal
+     * for editing the item's categories.
+     */
     showEditCategoriesModal() {
         this.props.dispatch({type: LocationActions.ActionTypes.LOCATION.SHOW_LOCATION_EDIT_CATEGORY_MODAL,
-            actionType: 'edit'});
+                             actionType: 'edit'});
     }
 
+    /**
+     * This function renders the item's updated
+     * categories in "edit" mode.
+     *
+     * @returns {*}
+     */
     renderNewCategoriesField() {
         var that = this;
 
@@ -229,10 +302,21 @@ class LocationItem extends React.Component {
         }
     }
 
+    /**
+     * This function show the google api modal
+     * for selecting coordinates for the current
+     * item.
+     *
+     */
     showGoogleMapApiModal() {
         this.props.dispatch({type: LocationActions.ActionTypes.LOCATION.SHOW_GOOGLE_API_MAPS});
     }
 
+    /**
+     * This function updates the coordinates
+     * according to the address.
+     *
+     */
     getCoordinatesByAddress() {
         if ( this.props.locationData.address.length > 0 ) {
             LocationActions.getCoordinatesByAddress(this.props.dispatch, this.props.locationData.address);
@@ -307,6 +391,12 @@ class LocationItem extends React.Component {
         }
     }
 
+    /**
+     * This function renders the current item
+     * in "edit" mode.
+     *
+     * @returns {XML}
+     */
     renderEditedRow() {
         this.initVariables();
 
@@ -356,7 +446,7 @@ class LocationItem extends React.Component {
 
     render() {
         if ( this.props.locationIndex == this.props.editLocationIndex ) {
-            // If the edit index equals thye location index then
+            // If the edit index equals the location index then
             // the current location item is being edited
             return this.renderEditedRow();
         } else {
