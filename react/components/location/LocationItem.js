@@ -107,7 +107,7 @@ class LocationItem extends React.Component {
 
         if ( this.props.item.categories.length > 0 ) {
             let locationCategories = this.props.item.categories.map( function(item, categoryId) {
-                if ( that.props.item.categories[categoryId] == 1 ) {
+                if ( that.props.item.categories[categoryId] == 1 && that.props.categoriesList[categoryId].deleted == 0 ) {
                     return (
                         <li key={categoryId}>{that.props.categoriesList[categoryId].name}</li>
                     );
@@ -187,7 +187,7 @@ class LocationItem extends React.Component {
 
         if ( this.props.locationData.categories.length > 0 ) {
             let locationCategories = that.props.locationData.categories.map( function(item, categoryId) {
-                if ( that.props.locationData.categories[categoryId] == 1 ) {
+                if ( that.props.locationData.categories[categoryId] == 1 && that.props.categoriesList[categoryId].deleted == 0) {
                     return (
                         <li key={categoryId}>{that.props.categoriesList[categoryId].name}</li>
                     );
